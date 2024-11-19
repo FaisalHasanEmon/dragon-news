@@ -1,9 +1,10 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 
 const Register = () => {
   const { createNewUser, setUser } = useContext(AuthContext);
+  const [error, setError] = useState({});
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
@@ -11,6 +12,11 @@ const Register = () => {
     const photo = form.get("photo");
     const email = form.get("email");
     const password = form.get("password");
+    if (password.length < 8) {
+      const pass = "Password must be at least 8 character long";
+      setError({ ...error, pass });
+      return;
+    }
     // console.log({ name, photo, email, password });
 
     createNewUser(email, password)
@@ -19,10 +25,8 @@ const Register = () => {
         setUser(newUser);
         console.log(newUser);
       })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+      .catch((err) => {
+        setError({ ...error, login: err });
       });
   };
   return (
@@ -73,6 +77,7 @@ const Register = () => {
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
+
               <input
                 name="password"
                 type="password"
@@ -80,6 +85,9 @@ const Register = () => {
                 className="input input-bordered"
                 required
               />
+              {error.pass && (
+                <small className="text-red-500">{error.pass}</small>
+              )}
             </div>
             <div className="form-control mt-6">
               <button className="btn btn-neutral rounded-none">Register</button>

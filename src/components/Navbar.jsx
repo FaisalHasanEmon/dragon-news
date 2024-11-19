@@ -11,8 +11,8 @@ const Navbar = () => {
       <div>{user && user.email}</div>
       <div className="nav space-x-5">
         <Link to="/">Home</Link>
-        <Link to="/career">Career</Link>
-        <Link to="/about">About</Link>
+        <Link to="/">Career</Link>
+        <Link to="/">About</Link>
       </div>
       <div className="login flex items-center gap-2">
         <div>

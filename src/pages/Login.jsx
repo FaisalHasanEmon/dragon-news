@@ -1,9 +1,12 @@
-import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 
 const Login = () => {
   const { userLogin, setUser } = useContext(AuthContext);
+  const [error, setError] = useState({});
+  const location = useLocation();
+  const navigate = useNavigate();
   const handleUserLogin = (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
@@ -15,11 +18,13 @@ const Login = () => {
         console.log(result);
         const presentUser = result.user;
         setUser(presentUser);
+        navigate(location?.state ? location.state : "/");
       })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("Something is wrong here : ", errorCode, errorMessage);
+      .catch((err) => {
+        // const errorCode = err.code;
+        // const errorMessage = err.message;
+        setError({ ...error, login: err.code });
+        console.log(error.login);
       });
   };
 
@@ -53,6 +58,11 @@ const Login = () => {
               className="input input-bordered"
               required
             />
+            {error.login && (
+              <label className="label  text-red-500 mt-4 mx-auto">
+                {error.login.split("/")[1]}
+              </label>
+            )}
             <label className="label">
               <a href="#" className="label-text-alt link link-hover">
                 Forgot password?
