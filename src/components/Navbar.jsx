@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom";
-import user from "../assets/user.png";
+import userPhoto from "../assets/user.png";
+import { useContext } from "react";
+import { AuthContext } from "../provider/AuthProvider";
+
 const Navbar = () => {
+  const { user, logout } = useContext(AuthContext);
+
   return (
     <div className="flex justify-between items-center">
-      <div></div>
+      <div>{user && user.email}</div>
       <div className="nav space-x-5">
         <Link to="/">Home</Link>
         <Link to="/career">Career</Link>
@@ -11,11 +16,23 @@ const Navbar = () => {
       </div>
       <div className="login flex items-center gap-2">
         <div>
-          <img src={user} />
+          <img src={userPhoto} />
         </div>
-        <button className="btn btn-neutral rounded-none px-10 text-white">
-          Login
-        </button>
+        {user && user?.email ? (
+          <button
+            onClick={logout}
+            className="btn btn-neutral rounded-none px-10 text-white"
+          >
+            Logout
+          </button>
+        ) : (
+          <Link
+            to="/auth/login"
+            className="btn btn-neutral rounded-none px-10 text-white"
+          >
+            Login
+          </Link>
+        )}
       </div>
     </div>
   );
