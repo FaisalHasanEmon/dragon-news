@@ -15,7 +15,6 @@ const Login = () => {
 
     userLogin(email, password)
       .then((result) => {
-        console.log(result);
         const presentUser = result.user;
         setUser(presentUser);
         navigate(location?.state ? location.state : "/");
@@ -24,7 +23,6 @@ const Login = () => {
         // const errorCode = err.code;
         // const errorMessage = err.message;
         setError({ ...error, login: err.code });
-        console.log(error.login);
       });
   };
 

@@ -18,7 +18,6 @@ const Register = () => {
       setError({ ...error, pass });
       return;
     }
-    // console.log({ name, photo, email, password });
 
     createNewUser(email, password)
       .then((result) => {
@@ -26,7 +25,7 @@ const Register = () => {
         setUser(newUser);
         updateUserProfile(name, photo)
           .then(() => navigate("/"))
-          .catch((er) => console.log(er));
+          .catch((er) => alert(er));
       })
       .catch((err) => {
         setError({ ...error, login: err });
